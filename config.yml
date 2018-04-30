@@ -1,0 +1,10 @@
+is_display_login_in_effect: true
+force_spawn_loc:
+  w: 'world'
+  x: 0
+  y: 0
+  z: 0
+  y: 0
+  p: 0
+first_login_kits:
+- first_login_kit

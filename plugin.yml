@@ -1,0 +1,7 @@
+name: OcLobby
+main: vip.creeper.mcserverplugins.oclobby.OcLobby
+author: July_ss
+version: 1.0.0
+softdepend: [AuthMe, CreeperKits]
+commands:
+  oclobby:
