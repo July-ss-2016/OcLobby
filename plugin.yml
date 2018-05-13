@@ -1,7 +1,8 @@
 name: OcLobby
-main: vip.creeper.mcserverplugins.oclobby.OcLobby
+main: vip.ourcraft.mcserverplugins.oclobby.OcLobby
 author: July_ss
 version: 1.0.0
-softdepend: [AuthMe, CreeperKits]
+depend: [AuthMe, ProtocolLib]
+softdepend: [CreeperKits]
 commands:
   oclobby:

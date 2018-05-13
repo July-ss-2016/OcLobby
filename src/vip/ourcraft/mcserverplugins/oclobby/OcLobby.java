@@ -1,11 +1,19 @@
 package vip.ourcraft.mcserverplugins.oclobby;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import vip.ourcraft.mcserverplugins.oclobby.listeners.AuthMeListener;
 import vip.ourcraft.mcserverplugins.oclobby.listeners.BukkitListener;
+import vip.ourcraft.mcserverplugins.oclobby.listeners.QrCodeListener;
+import vip.ourcraft.mcserverplugins.oclobby.tasks.BossBarUpdateTask;
+import vip.ourcraft.mcserverplugins.oclobby.tasks.TimeLockTask;
+import vip.ourcraft.mcserverplugins.oclobby.utils.BukkitUtil;
+
+import java.util.List;
 
 /**
  * Created by July on 2018/04/30.
@@ -15,20 +23,36 @@ public class OcLobby extends JavaPlugin {
     private static OcLobby instance;
     private Settings settings;
     private boolean isCreeperKitsEnabled;
+    private BossBarUpdateTask bossBarUpdateTask;
 
     public void onEnable() {
         instance = this;
         this.settings = new Settings();
-        this.isCreeperKitsEnabled = Bukkit.getPluginManager().isPluginEnabled("CreeperKits");
 
         loadConfig();
 
+        this.isCreeperKitsEnabled = Bukkit.getPluginManager().isPluginEnabled("CreeperKits");
+        this.bossBarUpdateTask = new BossBarUpdateTask(this);
+
         if (Bukkit.getPluginManager().isPluginEnabled("AuthMe")) {
-            Bukkit.getPluginManager().registerEvents(new AuthMeListener(), this);
+            Bukkit.getPluginManager().registerEvents(new AuthMeListener(this), this);
         }
 
         Bukkit.getPluginManager().registerEvents(new BukkitListener(this), this);
-        getCommand("oclobby").setExecutor(new AdminCommand());
+        Bukkit.getPluginManager().registerEvents(new QrCodeListener(), this);
+
+        getCommand("oclobby").setExecutor(new AdminCommand(this));
+
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, new TimeLockTask(this), 0L, 20L);
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, bossBarUpdateTask, 0L, 40L);
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            bossBarUpdateTask.addPlayer(player);
+        }
+    }
+
+    public BossBarUpdateTask getBossBarUpdateTask() {
+        return bossBarUpdateTask;
     }
 
     public static OcLobby getInstance() {
@@ -43,15 +67,23 @@ public class OcLobby extends JavaPlugin {
         return settings;
     }
 
-    private void loadConfig() {
+    public void loadConfig() {
         saveDefaultConfig();
         reloadConfig();
 
         FileConfiguration config = getConfig();
 
         settings.setDisplayLoginInEffect(config.getBoolean("is_display_login_in_effect"));
-        settings.setForceSpawnLoc(new Location(Bukkit.getWorld(config.getString("force_spawn_loc.w")), config.getDouble("force_spawn_loc.x"), config.getDouble("force_spawn_loc.y"), config.getDouble("force_spawn_loc.z"),
-                (float) config.getDouble("force_spawn_loc.x"), (float) config.getDouble("force_spawn_loc.x")));
-        settings.setFirstLoginKits(config.getStringList("first_login_kits"));
+        settings.setSpawnLoc(new Location(Bukkit.getWorld(config.getString("spawn_loc.w")), config.getDouble("spawn_loc.x"), config.getDouble("spawn_loc.y"), config.getDouble("spawn_loc.z"),
+                (float) config.getDouble("spawn_loc.yaw"), (float) config.getDouble("spawn_loc.pitch")));
+        settings.setJoinKits(config.getStringList("join_kits"));
+        settings.setWelcomeTitle(ChatColor.translateAlternateColorCodes('&', config.getString("welcome_title")));
+        settings.setWelcomeSubTitle(ChatColor.translateAlternateColorCodes('&', config.getString("welcome_subtitle")));
+        settings.setConfirmed(config.getBoolean("confirmed", false));
+        settings.setQrCodeLores(config.getStringList("qr_code_lores"));
+
+        List<String> bsBarMsgs = config.getStringList("bs_bar_msgs");
+
+        settings.setBsBarMsgs(BukkitUtil.translateListColorCode(bsBarMsgs));
     }
 }

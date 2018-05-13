@@ -1,10 +1,19 @@
+# 本插件含高危操作, 确认后才能生效
+confirmed: false
 is_display_login_in_effect: true
-force_spawn_loc:
+spawn_loc:
   w: 'world'
   x: 0
   y: 0
   z: 0
-  y: 0
-  p: 0
-first_login_kits:
-- first_login_kit
+  yaw: 0
+  pitch: 0
+join_kits:
+- join_kit
+lock_time: 0
+welcome_title: '欢迎来到OurCraft服务器'
+welcome_subtitle: '祝您游戏愉快'
+bs_bar_msgs:
+- 'm0'
+- 'm1'
+qrcode_kit: 'qrcode_kit'
