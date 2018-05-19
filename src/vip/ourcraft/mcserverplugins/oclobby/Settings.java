@@ -1,29 +1,29 @@
 package vip.ourcraft.mcserverplugins.oclobby;
 
 import org.bukkit.Location;
+import vip.creeper.mcserverplugins.creeperkits.Kit;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by July on 2018/04/30.
  */
 public class Settings {
-    private boolean confirmed;
     private boolean isDisplayLoginInEffect;
     private Location spawnLoc;
-    private List<String> joinKits;
     private int lockTime;
     private String welcomeTitle;
     private String welcomeSubTitle;
     private List<String> bsBarMsgs;
-    private List<String> qrCodeLores;
+    private Kit qrCodeKit;
 
-    public List<String> getQrCodeLores() {
-        return qrCodeLores;
+    public Kit getQrCodeKit() {
+        return qrCodeKit;
     }
 
-    public void setQrCodeLores(List<String> qrCodeLores) {
-        this.qrCodeLores = qrCodeLores;
+    public void setQrCodeKit(Kit qrCodeKit) {
+        this.qrCodeKit = qrCodeKit;
     }
 
     public List<String> getBsBarMsgs() {
@@ -32,14 +32,6 @@ public class Settings {
 
     public void setBsBarMsgs(List<String> bsBarMsgs) {
         this.bsBarMsgs = bsBarMsgs;
-    }
-
-    public boolean isConfirmed() {
-        return confirmed;
-    }
-
-    public void setConfirmed(boolean confirmed) {
-        this.confirmed = confirmed;
     }
 
     public String getWelcomeSubTitle() {
@@ -80,13 +72,5 @@ public class Settings {
 
     public void setSpawnLoc(Location spawnLoc) {
         this.spawnLoc = spawnLoc;
-    }
-
-    public List<String> getJoinKits() {
-        return joinKits;
-    }
-
-    public void setJoinKits(List<String> joinKits) {
-        this.joinKits = joinKits;
     }
 }

@@ -17,6 +17,7 @@ import java.lang.reflect.InvocationTargetException;
 
 /**
  * Created by July on 2018/04/30.
+ * 登录服霹雳效果
  */
 public class AuthMeListener implements Listener {
     private Settings settings;

@@ -1,6 +1,7 @@
 package vip.ourcraft.mcserverplugins.oclobby.listeners;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -8,14 +9,18 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.*;
-import org.bukkit.event.weather.WeatherChangeEvent;
-import vip.creeper.mcserverplugins.creeperkits.CreeperKits;
+import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import vip.ourcraft.mcserverplugins.oclobby.OcLobby;
 import vip.ourcraft.mcserverplugins.oclobby.Settings;
 
 /**
  * Created by July on 2018/04/30.
+ * 禁止在登录服破坏|放置 方块、丢弃|拾取 物品、攻击实体
+ * 登录服允许聊天，将设置严格的正则表达式
  */
 public class BukkitListener implements Listener {
     private OcLobby plugin;
@@ -48,26 +53,17 @@ public class BukkitListener implements Listener {
         // 必须在同步线程中操作
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             // 添加至bar
-            plugin.getBossBarUpdateTask().addPlayer(player);
+            plugin.getBossBarUpdateTask().getBar().addPlayer(player);
             // 传送至指定出生点
             player.teleport(settings.getSpawnLoc());
-
-            if (settings.isConfirmed() && !player.hasPermission("oclobby.admin")) {
-                player.getInventory().clear();
-            }
-
-            // 首次登录礼包
-            if (plugin.getCreeperKitsEnabled()) {
-                for (String kitName : settings.getJoinKits()) {
-                    CreeperKits.getInstance().getKitManager().getKit(kitName).give(player);
-                }
-            }
         }, 5L);
     }
 
     @EventHandler
     public void onPlayerQuitEvent(PlayerQuitEvent event) {
-        plugin.getBossBarUpdateTask().removePlayer(event.getPlayer());
+        Player player = event.getPlayer();
+
+        plugin.getBossBarUpdateTask().getBar().addPlayer(player);
     }
 
     @EventHandler
@@ -83,16 +79,24 @@ public class BukkitListener implements Listener {
 
     @EventHandler
     public void onPlayerDropItemEvent(PlayerDropItemEvent event) {
-        event.setCancelled(true);
+        if (!event.getPlayer().hasPermission("oclobby.admin")) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler
-    public void onPlayerPickupItemEvent(PlayerPickupItemEvent event) {
-        event.setCancelled(true);
+    public void onPlayerPickupItemEvent(EntityPickupItemEvent event) {
+        Entity entity  = event.getEntity();
+
+        if (!entity.hasPermission("oclobby.admin")) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler
     public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
-        event.setCancelled(true);
+        if (!event.getEntity().hasPermission("oclobby.admin")) {
+            event.setCancelled(true);
+        }
     }
 }

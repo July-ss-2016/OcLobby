@@ -19,15 +19,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../mc_test_servers/spigot_188_0/plugins/CreeperKits.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../java_api/minecraft/plugins/ProtocolLib.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -43,6 +34,24 @@
         <SOURCES>
           <root url="jar://$MODULE_DIR$/../../../java_api/minecraft/spigot/spigot-latest.jar!/" />
         </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../java_api/minecraft/plugins/CreeperKits.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../java_api/minecraft/plugins/ImageOnMap.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
       </library>
     </orderEntry>
   </component>

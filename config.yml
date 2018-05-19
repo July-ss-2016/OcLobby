@@ -1,5 +1,3 @@
-# 本插件含高危操作, 确认后才能生效
-confirmed: false
 is_display_login_in_effect: true
 spawn_loc:
   w: 'world'
@@ -8,8 +6,6 @@ spawn_loc:
   z: 0
   yaw: 0
   pitch: 0
-join_kits:
-- join_kit
 lock_time: 0
 welcome_title: '欢迎来到OurCraft服务器'
 welcome_subtitle: '祝您游戏愉快'

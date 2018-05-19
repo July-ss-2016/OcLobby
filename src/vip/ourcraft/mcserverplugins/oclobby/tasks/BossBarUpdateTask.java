@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
-import org.bukkit.entity.Player;
 import vip.ourcraft.mcserverplugins.oclobby.OcLobby;
 
 import java.util.List;
@@ -42,11 +41,7 @@ public class BossBarUpdateTask implements Runnable {
         });
     }
 
-    public void addPlayer(Player player) {
-        bar.addPlayer(player);
-    }
-
-    public void removePlayer(Player player) {
-        bar.removePlayer(player);
+    public BossBar getBar() {
+        return bar;
     }
 }

@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" build-on-make="true" name="OcLobby:jar">
-    <output-path>$PROJECT_DIR$/../../../../mc_test_servers/spigot_188_0/plugins</output-path>
+    <output-path>$PROJECT_DIR$/../../../../mc_test_servers/spigot_112_0/plugins</output-path>
     <root id="archive" name="OcLobby.jar">
       <element id="module-output" name="OcLobby" />
       <element id="file-copy" path="$PROJECT_DIR$/config.yml" />
