@@ -36,15 +36,12 @@ public class OcLobby extends JavaPlugin {
 
         this.bossBarUpdateTask = new BossBarUpdateTask(this);
 
-        if (Bukkit.getPluginManager().isPluginEnabled("AuthMe")) {
-            Bukkit.getPluginManager().registerEvents(new AuthMeListener(this), this);
-        }
-
         if (isImageOnMapEnabled && isCreeperKitsEnabled) {
             Bukkit.getPluginManager().registerEvents(new QrCodeListener(this), this);
         }
 
         Bukkit.getPluginManager().registerEvents(new BukkitListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new AuthMeListener(this), this);
 
         getCommand("oclobby").setExecutor(new AdminCommand(this));
 
