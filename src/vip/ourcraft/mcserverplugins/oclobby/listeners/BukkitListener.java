@@ -1,6 +1,7 @@
 package vip.ourcraft.mcserverplugins.oclobby.listeners;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -10,10 +11,8 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.ItemStack;
 import vip.ourcraft.mcserverplugins.oclobby.OcLobby;
 import vip.ourcraft.mcserverplugins.oclobby.Settings;
 
@@ -50,6 +49,7 @@ public class BukkitListener implements Listener {
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
+        event.setJoinMessage("§7[§a+§7] " + player.getName());
         // 必须在同步线程中操作
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             // 添加至bar
@@ -64,6 +64,11 @@ public class BukkitListener implements Listener {
         Player player = event.getPlayer();
 
         plugin.getBossBarUpdateTask().getBar().addPlayer(player);
+        event.setQuitMessage("§7[§c-§7] " + player.getName());
+
+        if (settings.isQuitClearInv()) {
+            player.getInventory().clear();
+        }
     }
 
     @EventHandler
@@ -98,5 +103,11 @@ public class BukkitListener implements Listener {
         if (!event.getEntity().hasPermission("oclobby.admin")) {
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onAsyncPlayerChatEvent(AsyncPlayerChatEvent event) {
+        event.setCancelled(true);
+/*        event.setFormat("[大厅][" + event.getPlayer().getName() + "] " + ChatColor.stripColor(event.getMessage()));*/
     }
 }
